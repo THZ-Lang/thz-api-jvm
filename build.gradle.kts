@@ -1,0 +1,58 @@
+﻿// ==============================================================================
+// thz-api-jvm â€” API REST/WebSocket do THZ-LANG (Spring Boot)
+//
+// MÃ³dulo que expÃµe o engine thz-core-jvm via HTTP para consumption
+// pelo frontend web (Playground) e pelo LSP Server (Node.js).
+// CLI e GUI nativos consomem thz-core diretamente, sem esta camada.
+// ==============================================================================
+
+plugins {
+    java
+    id("org.springframework.boot") version "4.1.1"
+    id("io.spring.dependency-management") version "1.1.7"
+}
+
+val repoRoot = rootProject.projectDir.resolve("../thz-lang/")
+val versionFile = if (file("version.txt").exists()) file("version.txt") else repoRoot.resolve("version.txt")
+val thzVersion = if (versionFile.exists()) versionFile.readText().trim() else "0.4.0"
+
+group = "thz.lang"
+version = thzVersion
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
+dependencies {
+    implementation("thz.lang:thz-core:$thzVersion")
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(listOf("-Xlint:all", "-Xlint:-processing"))
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
