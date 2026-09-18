@@ -1,7 +1,7 @@
-﻿// ==============================================================================
-// thz-api-jvm â€” API REST/WebSocket do THZ-LANG (Spring Boot)
+// ==============================================================================
+// thz-api-jvm — API REST/WebSocket do THZ-LANG (Spring Boot)
 //
-// MÃ³dulo que expÃµe o engine thz-core-jvm via HTTP para consumption
+// Módulo que expõe o engine thz-core-jvm via HTTP para consumption
 // pelo frontend web (Playground) e pelo LSP Server (Node.js).
 // CLI e GUI nativos consomem thz-core diretamente, sem esta camada.
 // ==============================================================================
